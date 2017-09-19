@@ -14,7 +14,7 @@ BOT_NAME = 'indeed'
 SPIDER_MODULES = ['indeed.spiders']
 NEWSPIDER_MODULE = 'indeed.spiders'
 
-DEPTH_LIMIT = 0
+DEPTH_LIMIT = 10
 
 DOWNLOAD_DELAY = 3
 RANDOMIZE_DOWNLOAD_DELAY = True
@@ -30,10 +30,10 @@ AJAXCRAWL_ENABLED = True
 LOG_ENABLED = True
 
 
-ITEM_PIPELINES = [
-	'indeed.pipelines.IndeedPipeline',
-	'indeed.pipelines.SqlInsert',
-]
+ITEM_PIPELINES = {
+	'indeed.pipelines.IndeedPipeline': 300,
+	'indeed.pipelines.SqlInsert': 800,
+}
 
 # Configure maximum concurrent requests performed by Scrapy (default: 16)
 #CONCURRENT_REQUESTS = 32
@@ -103,7 +103,7 @@ ITEM_PIPELINES = [
 #HTTPCACHE_IGNORE_HTTP_CODES = []
 #HTTPCACHE_STORAGE = 'scrapy.extensions.httpcache.FilesystemCacheStorage'
 
-SQL = {'dbname':'skillsdb',
+SQL = {'dbname':'jobpostingdb',
 'host':'dw-instance.cbrlhmbtfrqg.eu-west-2.redshift.amazonaws.com',
 'port':'5439',
 'user':'masteruser', 
@@ -116,7 +116,7 @@ def load_lines(path):
                 f.read().decode('utf8').splitlines()
                 if line.strip()]
 
-ROTATING_PROXY_LIST = load_lines('/home/ubuntu/IT/orcai_new/virtualenvironment/cv_crawler/cv_data/list.txt')
+ROTATING_PROXY_LIST = load_lines('/home/ubuntu/IT/virtualenv_jpostings/indeed/indeed/list.txt')
 
 DOWNLOADER_MIDDLEWARES = {
     # ...
@@ -127,5 +127,5 @@ DOWNLOADER_MIDDLEWARES = {
     # ...
 }
 
-ROTATING_PROXY_PAGE_RETRY_TIMES = 3
+ROTATING_PROXY_PAGE_RETRY_TIMES = 1
 ROTATING_PROXY_CLOSE_SPIDER = False
