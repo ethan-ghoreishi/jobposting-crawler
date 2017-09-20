@@ -40,7 +40,7 @@ class IndeedJpostingSpider(CrawlSpider):
         self.log('\n Crawling  %s\n' % response.url)
         hxs = Selector(response)
 #        sites = hxs.select("//div[@class='row ' or @class='row lastRow']")
-        sites = hxs.xpath("//div[@class='  row  result' or @class='lastRow  row  result' or @class='row sjlast result']")
+        sites = hxs.xpath("//div[@class='  row  result' or @class='lastRow  row  result' or @class='row sjlast result' or @class='row  result']")
 	#sites = hxs.select("//div[@class='row ']")
         items = []
         for site in sites:
@@ -50,15 +50,15 @@ class IndeedJpostingSpider(CrawlSpider):
             link_url= site.xpath('h2/a/@href').extract()
             item['link_url'] = link_url
             item['crawl_url'] = response.url
-            item['location'] = site.xpath("span[@class='location']/text()").extract()
+            item['location'] = site.xpath("span[@itemprop='jobLocation']//text()").extract()
 
 	    # Not all entries have a company
-            if site.xpath("span[@class='company']/text()").extract() == []:
+            if site.xpath("span[@class='company']//text()").extract() == []:
                 item['company'] = [u'']
             else:
                 item['company'] = site.xpath("span[@class='company']//text()").extract()
-                item['summary'] = site.xpath("//table/tr/td/span[@class='summary']").extract()
-                item['src'] = site.xpath("table/tr/td/span[@class='source']/text()").extract()
+                item['summary'] = site.xpath("table//span[@class='summary']/text()").extract()
+#                item['src'] = site.xpath("table/tr/td/span[@class='source']/text()").extract()
                 item['found_date'] = site.xpath("table/tr/td//span[@class='date']/text()").extract()
 		#item['source_url'] = self.get_source(link_url)
                 request = Request("http://www.indeed.com" + item['link_url'][0], callback=self.parse_next_site)
@@ -66,8 +66,8 @@ class IndeedJpostingSpider(CrawlSpider):
                 yield request
 
                 items.append(item)
-        print(items)
-        return items
+            return item
+        return item
 
 			
 SPIDER=IndeedJpostingSpider()

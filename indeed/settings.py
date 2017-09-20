@@ -31,8 +31,8 @@ LOG_ENABLED = True
 
 
 ITEM_PIPELINES = {
-	'indeed.pipelines.IndeedPipeline': 300,
-	'indeed.pipelines.SqlInsert': 800,
+	'indeed.pipelines.IndeedPipeline': 300
+#	'indeed.pipelines.SqlInsert': 800,
 }
 
 # Configure maximum concurrent requests performed by Scrapy (default: 16)

@@ -15,7 +15,7 @@ class IndeedItem(Item):
     location = Field()
     company = Field()
     summary = Field()
-    src = Field()
+#    src = Field()
     found_date = Field()
     source_url = Field()
     source_page_body = Field()
