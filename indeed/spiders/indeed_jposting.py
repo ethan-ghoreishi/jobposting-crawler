@@ -1,5 +1,6 @@
 # -*- coding: utf-8 -*-
-from scrapy.selector import HtmlXPathSelector
+#from scrapy.selector import HtmlXPathSelector
+from scrapy import Selector
 from scrapy.linkextractors import LinkExtractor
 from scrapy.contrib.spiders import CrawlSpider, Rule
 from scrapy.spider import BaseSpider
@@ -37,28 +38,28 @@ class IndeedJpostingSpider(CrawlSpider):
 
     def parse_item(self, response):
         self.log('\n Crawling  %s\n' % response.url)
-        hxs = HtmlXPathSelector(response)
+        hxs = Selector(response)
 #        sites = hxs.select("//div[@class='row ' or @class='row lastRow']")
-        sites = hxs.select("//div[@class='row result']")
+        sites = hxs.xpath("//div[@class='  row  result' or @class='lastRow  row  result' or @class='row sjlast result']")
 	#sites = hxs.select("//div[@class='row ']")
         items = []
         for site in sites:
             item = IndeedItem(company='none')
 	
-            item['job_title'] = site.select('h2/a/@title').extract()
-            link_url= site.select('h2/a/@href').extract()
+            item['job_title'] = site.xpath('h2/a/@title').extract()
+            link_url= site.xpath('h2/a/@href').extract()
             item['link_url'] = link_url
             item['crawl_url'] = response.url
-            item['location'] = site.select("span[@class='location']/text()").extract()
+            item['location'] = site.xpath("span[@class='location']/text()").extract()
 
 	    # Not all entries have a company
-            if site.select("span[@class='company']/text()").extract() == []:
+            if site.xpath("span[@class='company']/text()").extract() == []:
                 item['company'] = [u'']
             else:
-                item['company'] = site.select("span[@class='company']/text()").extract()
-                item['summary'] = site.select("//table/tr/td/span[@class='summary']").extract()
-                item['src'] = site.select("table/tr/td/span[@class='source']/text()").extract()
-                item['found_date'] = site.select("table/tr/td/span[@class='date']/text()").extract()
+                item['company'] = site.xpath("span[@class='company']//text()").extract()
+                item['summary'] = site.xpath("//table/tr/td/span[@class='summary']").extract()
+                item['src'] = site.xpath("table/tr/td/span[@class='source']/text()").extract()
+                item['found_date'] = site.xpath("table/tr/td//span[@class='date']/text()").extract()
 		#item['source_url'] = self.get_source(link_url)
                 request = Request("http://www.indeed.com" + item['link_url'][0], callback=self.parse_next_site)
                 request.meta['item'] = item
