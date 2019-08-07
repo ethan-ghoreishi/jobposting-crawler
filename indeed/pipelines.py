@@ -3,8 +3,6 @@
 # Define your item pipelines here
 #
 # Don't forget to add your pipeline to the ITEM_PIPELINES setting
-# See: http://doc.scrapy.org/en/latest/topics/item-pipeline.html
-
 
 import sys
 import psycopg2
@@ -14,18 +12,15 @@ from indeed.settings import SQL
 from indeed.items import IndeedItem
 
 class IndeedPipeline(object):
-#    def process_item(self, item, spider):
-	
+#    def process_item(self, item, spider):	
 #        i = item['summary'][0]
 #        i = remove_tags(i)
 #        i = replace_escape_chars(i)
 #        item['summary'][0] = i
-
 #        i = item['job_title'][0]
 #        i = remove_tags(i)
 #        i = replace_escape_chars(i)
-#        item['job_title'][0] = i
-	
+#        item['job_title'][0] = i	
 #        return item
 
 #class SqlInsert(object):
@@ -51,12 +46,10 @@ class IndeedPipeline(object):
 
 ))
 	
-
             self.c.execute('commit')
 
-
 #        except psycopg2.Error:
- #           print "Error %d: %s" % (Error.args[0], Error.args[1])
+#            print "Error %d: %s" % (Error.args[0], Error.args[1])
 #            sys.exit (1)
 
 #        return item
