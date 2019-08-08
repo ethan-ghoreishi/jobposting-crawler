@@ -104,10 +104,10 @@ ITEM_PIPELINES = {
 #HTTPCACHE_STORAGE = 'scrapy.extensions.httpcache.FilesystemCacheStorage'
 
 SQL = {'dbname':'jobpostingdb',
-'host':'dw-instance.cbrlhmbtfrqg.eu-west-2.redshift.amazonaws.com',
-'port':'5439',
-'user':'masteruser', 
-'password':'Ehgh1363'
+'host':'',
+'port':'',
+'user':'', 
+'password':''
 }
 
 def load_lines(path):
